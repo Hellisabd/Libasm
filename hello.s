@@ -12,8 +12,4 @@ hello:
     mov rdx, len
     syscall
 
-    mov rax, 60
-    xor rdi, rdi
-    syscall 
-
     ret

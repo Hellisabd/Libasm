@@ -1,7 +1,8 @@
 #include <stdio.h>
 
 void hello(void);
+int ft_strlen(const char *str);
 
 int main() {
-	hello();
+	printf("%d", ft_strlen("bonjour\n"));
 }
