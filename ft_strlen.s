@@ -22,7 +22,7 @@ ft_strlen:
 
 .print:
 	mov rax, 1
-	mov rdi, 1
+	mov rdi, 2
 	sub rsi, [count]
 	mov rdx, [count]
 	syscall

@@ -6,7 +6,7 @@ CC      = cc
 CFLAGS  = -Wall -Wextra -Werror -g3
 
 
-SRC_ASM = hello.s ft_strlen.s
+SRC_ASM = hello.s ft_strlen.s ft_strcpy.s
 OBJ_ASM = $(SRC_ASM:.s=.o)
 
 SRC_C   = main.c
@@ -46,3 +46,6 @@ git	: fclean
 	@@msg=$${MSG:-"$(CURRENT_DATE)"}; git commit -m "$(USER) $(CURRENT_DATE) $$msg" > /dev/null 2>&1
 	@git push > /dev/null 2>&1
 	@echo "$(GREEN)(•̀ᴗ•́)و ̑̑GIT UPDATE!(•̀ᴗ•́)و ̑̑$(DEF_COLOR)"
+
+gdb: all
+	gdb -x show.gdb ./a.out
