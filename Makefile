@@ -3,10 +3,10 @@ MAKEFLAGS += -s
 ASM     = nasm -f elf64
 AR      = ar rcs
 CC      = cc
-CFLAGS  = -Wall -Wextra -Werror -g3
+CFLAGS  = -Wall -Wextra -g3
 
 
-SRC_ASM = hello.s ft_strlen.s ft_strcpy.s
+SRC_ASM = hello.s ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s
 OBJ_ASM = $(SRC_ASM:.s=.o)
 
 SRC_C   = main.c

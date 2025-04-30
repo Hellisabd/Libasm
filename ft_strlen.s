@@ -11,7 +11,7 @@ ft_strlen:
 .loop:
 	mov al, [rsi]
 	cmp al, 0
-	je .print
+	je .done
 	inc qword [count]
 	inc rsi
 	jmp .loop
@@ -19,11 +19,3 @@ ft_strlen:
 .done:
 	mov rax, [count]
 	ret
-
-.print:
-	mov rax, 1
-	mov rdi, 2
-	sub rsi, [count]
-	mov rdx, [count]
-	syscall
-	jmp .done

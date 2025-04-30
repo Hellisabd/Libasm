@@ -1,19 +1,21 @@
 section .text
 	global ft_strcpy
-	mov rax, 0
 
 ft_strcpy: 
-	cmp rsi, 0x0
-	je .done
+	push rsi
+	push rdi
+
+.loop:
 	mov al, [rsi]
-	movzx rdi, al
-	; inc rsi
-	; inc rdi
-	; inc rax
-	; jmp .done
+	mov [rdi], al
+	cmp al, 0x0
+	je .done
+	inc rdi
+	inc rsi
+	jmp .loop
 
 .done:
-	; mov rdi, 0
-	; sub rdi, rax
+	pop rsi
+	pop rdi
 	mov rax, rdi
 	ret
