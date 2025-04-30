@@ -6,7 +6,7 @@ CC      = cc
 CFLAGS  = -Wall -Wextra -g3
 
 
-SRC_ASM = hello.s ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s
+SRC_ASM = hello.s ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s ft_read.s
 OBJ_ASM = $(SRC_ASM:.s=.o)
 
 SRC_C   = main.c

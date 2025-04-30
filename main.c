@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <signal.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 
 #define NC "\e[0m"
@@ -14,11 +15,14 @@
 #define PURPLE "\e[1;35m"
 #define BLUE "\e[1;36m"
 
+#define FILE_TEST open("test_file.txt", O_RDONLY)
+#define WRONG_FILE open("wrong_file.txt", O_RDONLY)
 #define WRONG_FD -1
 #define FD_TEST 1
 #define SRC "coucou\n"
 #define RESET errno=0;printf("\n");
 #define TITLE(string) printf("%s\n\n----%s----\n\n%s", RED, string, NC);
+#define BUFFER_SIZE 10
 
 
 // void hello(void);
@@ -26,8 +30,12 @@ int ft_strlen(const char *str);
 char *ft_strcpy(char * dest, char * const src);
 int ft_strcmp(char * dest, char * const src);
 int ft_write(int fd, char * const src, int len);
+int ft_read(int fd, char * buffer, int len);
 
 int main() {
+
+	int fd_test = FILE_TEST;
+	int fd_crashtest = WRONG_FILE;
 
 	char *dest = malloc(100000);
 	char *color = BLUE;
@@ -67,7 +75,31 @@ int main() {
 	RESET;
 	printf("retour de ft_write: %d\nErrno: %d: %s\n%s", ft_write(WRONG_FD, dest, ft_strlen(dest)), errno, strerror(errno), NC);
 
+	TITLE("Read");
 
+	char * my_read_buffer = calloc(BUFFER_SIZE, sizeof(char));
+	char * read_buffer = calloc(BUFFER_SIZE, sizeof(char));
+	color = PURPLE;
+	printf("%s", color);
+	RESET;
+	printf("retour de read: %zu\nErrno: %d: %s\n", read(fd_test, read_buffer, BUFFER_SIZE), errno, strerror(errno));
+	RESET;
+	printf("contenu du buffer de read: %s\n\n", read_buffer);
+	RESET;
+	printf("retour de ft_read: %d\nErrno: %d: %s\n", ft_read(fd_test, my_read_buffer, BUFFER_SIZE), errno, strerror(errno));
+	RESET;
+	printf("contenu du buffer de ft_read: %s\n\n", my_read_buffer);
+	RESET;
+	printf("retour de ft_read: %d\nErrno: %d: %s\n", ft_read(fd_crashtest, my_read_buffer, sizeof(my_read_buffer)), errno, strerror(errno));
+	RESET;
+	printf("contenu du buffer de ft_read: %s\n\n", my_read_buffer);
+	RESET;
+	printf("retour de read: %zu\nErrno: %d: %s\n", read(fd_crashtest, read_buffer, sizeof(read_buffer)), errno, strerror(errno));
+	RESET;
+	printf("contenu du buffer de read: %s\n\n%s", read_buffer, NC); 
+	RESET;
 
 	free(dest);
+	free(my_read_buffer);
+	free(read_buffer);
 }
