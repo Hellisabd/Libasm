@@ -3,10 +3,10 @@ MAKEFLAGS += -s
 ASM     = nasm -f elf64
 AR      = ar rcs
 CC      = cc
-CFLAGS  = -Wall -Wextra -g3
+CFLAGS  = -Wall -Wextra -Werror -g3
 
 
-SRC_ASM = hello.s ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s ft_read.s
+SRC_ASM = $(shell find . -type f -name '*.s')
 OBJ_ASM = $(SRC_ASM:.s=.o)
 
 SRC_C   = main.c
@@ -41,6 +41,17 @@ clean:
 fclean: clean
 	@echo "→ fclean"
 	@rm -f $(NAME) $(BIN)
+
+ok: all
+	./a.out
+
+crash: all
+	./a.out crash
+
+bonus: all
+	./a.out bonus
+
+
 git	: fclean
 	@git add . > /dev/null 2>&1
 	@@msg=$${MSG:-"$(CURRENT_DATE)"}; git commit -m "$(USER) $(CURRENT_DATE) $$msg" > /dev/null 2>&1
@@ -48,4 +59,4 @@ git	: fclean
 	@echo "$(GREEN)(•̀ᴗ•́)و ̑̑GIT UPDATE!(•̀ᴗ•́)و ̑̑$(DEF_COLOR)"
 
 gdb: all
-	gdb -x show.gdb ./a.out
+	gdb -x show.gdb ./a.out bonus

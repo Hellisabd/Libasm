@@ -15,7 +15,7 @@ ft_strcpy:
 	jmp .loop
 
 .done:
-	pop rsi
 	pop rdi
+	pop rsi
 	mov rax, rdi
 	ret

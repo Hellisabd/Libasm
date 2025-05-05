@@ -1,3 +1,4 @@
+#define _GNU_SOURCE 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,6 +6,8 @@
 #include <signal.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <malloc.h>
+#include <sys/resource.h>
 
 
 #define NC "\e[0m"
@@ -23,19 +26,25 @@
 #define RESET errno=0;printf("\n");
 #define TITLE(string) printf("%s\n\n----%s----\n\n%s", RED, string, NC);
 #define BUFFER_SIZE 10
+#define BINAIRE "01"
+#define HEXA "0123456789ABCDEF"
+#define TEN "0123456789"
+#define WTF "abcdef"
+
 
 
 // void hello(void);
 int ft_strlen(const char *str);
 char *ft_strcpy(char * dest, char * const src);
+char *ft_strdup(char * const src);
 int ft_strcmp(char * dest, char * const src);
 int ft_write(int fd, char * const src, int len);
 int ft_read(int fd, char * buffer, int len);
 
-int main() {
+void marche() {
 
 	int fd_test = FILE_TEST;
-	int fd_crashtest = WRONG_FILE;
+	// int fd_crashtest = WRONG_FILE;
 
 	char *dest = malloc(100000);
 	char *color = BLUE;
@@ -82,7 +91,7 @@ int main() {
 	color = PURPLE;
 	printf("%s", color);
 	RESET;
-	printf("retour de read: %zu\nErrno: %d: %s\n", read(fd_test, read_buffer, BUFFER_SIZE), errno, strerror(errno));
+	printf("retour de read: %zd\nErrno: %d: %s\n", read(fd_test, read_buffer, BUFFER_SIZE), errno, strerror(errno));
 	RESET;
 	printf("contenu du buffer de read: %s\n\n", read_buffer);
 	RESET;
@@ -90,16 +99,80 @@ int main() {
 	RESET;
 	printf("contenu du buffer de ft_read: %s\n\n", my_read_buffer);
 	RESET;
-	printf("retour de ft_read: %d\nErrno: %d: %s\n", ft_read(fd_crashtest, my_read_buffer, sizeof(my_read_buffer)), errno, strerror(errno));
+	printf("retour de ft_read: %d\nErrno: %d: %s\n", ft_read(WRONG_FD, my_read_buffer, sizeof(my_read_buffer)), errno, strerror(errno));
 	RESET;
 	printf("contenu du buffer de ft_read: %s\n\n", my_read_buffer);
 	RESET;
-	printf("retour de read: %zu\nErrno: %d: %s\n", read(fd_crashtest, read_buffer, sizeof(read_buffer)), errno, strerror(errno));
+	printf("retour de read: %zd\nErrno: %d: %s\n", read(WRONG_FD, read_buffer, sizeof(read_buffer)), errno, strerror(errno));
 	RESET;
-	printf("contenu du buffer de read: %s\n\n%s", read_buffer, NC); 
+	printf("contenu du buffer de read: %s\n\n%s", read_buffer, NC);
 	RESET;
+
+
+	TITLE("Strdup");
+
+	color = RED;
+	printf("%s", color);
+	RESET;
+	char *result = ft_strdup(SRC);
+	printf("retour de ft_strdup: %s\nErrno: %d: %s\n", result, errno, strerror(errno));
+	RESET;
+	free(result);
+	result = strdup(SRC);
+	printf("retour de strdup: %s\nErrno: %d: %s\n", result, errno, strerror(errno));
+	RESET;
+	free(result);
 
 	free(dest);
 	free(my_read_buffer);
 	free(read_buffer);
+}
+
+//main pour test le crash de malloc
+
+void crash() {
+	
+	struct rlimit rl = { .rlim_cur = 0, .rlim_max = 0 };
+	
+	if (setrlimit(RLIMIT_DATA, &rl) < 0) {
+		perror("setrlimit(RLIMIT_DATA)");
+		return ;
+	}
+	
+	mallopt(M_MMAP_MAX, 0);
+	char *color = BLUE;
+
+
+	TITLE("Strdup");
+
+	color = RED;
+	printf("%s", color);
+	RESET;
+	char *result = ft_strdup(SRC);
+	printf("retour de ft_strdup: %s\nErrno: %d: %s\n", result, errno, strerror(errno));
+	RESET;
+	free(result);
+	result = strdup(SRC);
+	printf("retour de strdup: %s\nErrno: %d: %s\n", result, errno, strerror(errno));
+	RESET;
+	free(result);
+}
+
+int ft_atoi_base(char *src, char *base);
+
+void bonus() {
+	char *number = "1A";
+	printf("retour de ft_atoi_base: %d\n", ft_atoi_base(number, HEXA));
+}
+
+int main(int argc, char **argv) {
+	(void)argv;
+	if (argc == 1)
+		bonus();
+	else if (!strcmp(argv[1], "crash"))
+		crash();
+	else {
+		bonus();
+	}
+	return 0;
 }

@@ -12,7 +12,7 @@ ft_read:
 	mov rdi, rax
 	call __errno_location
 	mov [rax], rdi
-	mov rax, -1
+	mov rax, 18446744073709551615
 
 .done:
 	ret
