@@ -3,9 +3,9 @@ section .text
 	extern malloc
 
 ft_list_push_front:
-	push rsi
 	cmp rdi, 0
 	je .error
+	push rsi
 	push rdi
 	mov rdi, 16
 	call malloc
