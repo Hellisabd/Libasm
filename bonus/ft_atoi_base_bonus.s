@@ -63,22 +63,22 @@ ft_atoi_base:
 
 .error_sign:
 	pop rax
-	mov rax, 43
+	mov rax, 0
 	ret
 
 .error_white:
 	pop rax
-	mov rax, 32
+	mov rax, 0
 	ret
 
 .wrong_length:
 	pop rax
-	mov rax, -1
+	mov rax, -0
 	ret
 
 .parsing_doublon:
 	pop rax
-	mov rax, 48
+	mov rax, 0
 	ret
 
 .atoi_handling:
