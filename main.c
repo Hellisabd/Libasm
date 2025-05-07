@@ -162,10 +162,16 @@ void crash() {
 	free(result);
 }
 
+void free_fct(void *data) {
+	free(data);
+}
+
 int ft_atoi_base(char *src, char *base);
 t_list *ft_list_push_front(t_list **head, void *data);
 int ft_list_size(t_list *head);
 t_list *ft_list_sort(t_list **head, int (*ft_strcmp)());
+t_list *ft_list_remove_if(t_list **head, void *to_comp, int (*ft_strcmp)(), void (free_fct)(void *));
+
 
 
 void bonus() {
@@ -181,64 +187,107 @@ void bonus() {
 
 	color = BLUE;
 	printf("%s", color);
+	char *data0 = malloc(sizeof(char) * 2);
+	data0[0] = '1';
+	data0[1] = '\0';
 	RESET;
-	t_list **head = NULL;//malloc(sizeof(t_list));
-	// head->data = "caca";
-	// head->next = NULL;
-	// void *data = "prout";
-	// t_list *front = *head;
-	// while (front) {
-	// 	printf("Data in node before push front: %s\n", (char *)front->data);
-	// 	front = front->next;
-	// }
-	// printf("\n");
+	t_list *head = malloc(sizeof(t_list));
+	head->data = data0;
+	head->next = NULL;
+	char *data1 = malloc(sizeof(char) * 2);
+	data1[0] = '1';
+	data1[1] = '\0';
+	char *data2 = malloc(sizeof(char) * 2);
+	data2[0] = '2';
+	data2[1] = '\0';
+	char *data3 = malloc(sizeof(char) * 2);
+	data3[0] = '3';
+	data3[1] = '\0';
+	char *data4 = malloc(sizeof(char) * 2);
+	data4[0] = '4';
+	data4[1] = '\0';
+	char *data5 = malloc(sizeof(char) * 2);
+	data5[0] = '5';
+	data5[1] = '\0';
+	t_list *front = head;
+	while (front) {
+		printf("Data in node before push front: %s\n", (char *)front->data);
+		front = front->next;
+	}
+	printf("\n");
 	write(1,"before",7);
-	if (!ft_list_push_front(head, "data"))
-		printf("return null");
+	ft_list_push_front(&head, data1);
+	if (!head) {
+		printf("return null\n");
+		return ;
+	}
 	printf ("return pas null");
-	// front = ft_list_push_front(head, "pipi");
-	t_list *tmp = *head;
+	front = ft_list_push_front(&head, data2);
+	front = ft_list_push_front(&head, data3);
+	front = ft_list_push_front(&head, data4);
+	t_list *tmp = head;
 	while (tmp) {
 		printf("Data in node after push front: %s\n", (char *)tmp->data);
 		tmp = tmp->next;
 	}
-	// printf("%s", NC);
-	// TITLE("List_size");
+	printf("%s", NC);
+	TITLE("List_size");
 
-	// color = GREEN;
-	// printf("%s", color);
-	// RESET;
-	// printf("Retour de lst size: %d\n%s", ft_list_size(head), NC);
+	color = GREEN;
+	printf("%s", color);
+	RESET;
+	printf("Retour de lst size: %d\n%s", ft_list_size(head), NC);
 
-	// TITLE("List_sort");
+	TITLE("List_sort");
 
-	// color = GREEN;
-	// printf("%s", color);
-	// RESET;
-	// front = head;
-	// while (front) {
-	// 	printf("apres lst sort: %s\n%s", (char *)front->data, NC);
-	// 	front = front->next;
-	// }
-	// ft_list_sort(&head, &ft_strcmp);
-	// front = head;
-	// while (front) {
-	// 	printf("apres lst sort: %s\n%s", (char *)front->data, NC);
-	// 	front = front->next;
-	// }
+	color = GREEN;
+	printf("%s", color);
+	RESET;
+	front = head;
+	while (front) {
+		printf("avant lst sort: %s\n", (char *)front->data);
+		front = front->next;
+	}
+	printf("\n");
+	ft_list_sort(&head, &ft_strcmp);
+	front = head;
+	while (front) {
+		printf("apres lst sort: %s\n", (char *)front->data);
+		front = front->next;
+	}
+	printf("%s", NC);
 
+	TITLE("Remove if");
 
-	// while (head) {
-	// 	t_list *tmp = head;
-	// 	head = head->next;
-	// 	free(tmp);
-	// }
+	color = GREEN;
+	printf("%s", color);
+
+	front = head;
+	while (front) {
+		printf("avant lst remove if: %s\n", (char *)front->data);
+		front = front->next;
+	}
+
+	ft_list_remove_if(&head, "1", &ft_strcmp, &free_fct);
+	front = head;
+	while (front) {
+		printf("apres lst remove if: %s\n", (char *)front->data);
+		front = front->next;
+	}
+	while (head) {
+		t_list *tmp = head;
+		head = head->next;
+		if (head) {
+			free(tmp->data);
+			free(tmp);
+		}
+	}
 }
 
 int main(int argc, char **argv) {
 	(void)argv;
 	if (argc == 1)
-		marche();
+		bonus();
 	else if (!strcmp(argv[1], "crash"))
 		crash();
 	else {

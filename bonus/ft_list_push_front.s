@@ -5,6 +5,8 @@ section .text
 ft_list_push_front:
 	cmp rdi, 0
 	je .error
+	cmp rsi, 0
+	je .error
 	push rsi
 	push rdi
 	mov rdi, 16
