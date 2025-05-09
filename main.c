@@ -187,13 +187,10 @@ void bonus() {
 
 	color = BLUE;
 	printf("%s", color);
+	t_list *head = NULL;
 	char *data0 = malloc(sizeof(char) * 2);
 	data0[0] = '1';
 	data0[1] = '\0';
-	RESET;
-	t_list *head = malloc(sizeof(t_list));
-	head->data = data0;
-	head->next = NULL;
 	char *data1 = malloc(sizeof(char) * 2);
 	data1[0] = '1';
 	data1[1] = '\0';
@@ -209,22 +206,19 @@ void bonus() {
 	char *data5 = malloc(sizeof(char) * 2);
 	data5[0] = '5';
 	data5[1] = '\0';
+	RESET;
 	t_list *front = head;
 	while (front) {
 		printf("Data in node before push front: %s\n", (char *)front->data);
 		front = front->next;
 	}
 	printf("\n");
-	write(1,"before",7);
+	ft_list_push_front(&head, data0);
 	ft_list_push_front(&head, data1);
-	if (!head) {
-		printf("return null\n");
-		return ;
-	}
-	printf ("return pas null");
-	front = ft_list_push_front(&head, data2);
-	front = ft_list_push_front(&head, data3);
-	front = ft_list_push_front(&head, data4);
+	ft_list_push_front(&head, data2);
+	ft_list_push_front(&head, data3);
+	ft_list_push_front(&head, data4);
+	ft_list_push_front(&head, data5);
 	t_list *tmp = head;
 	while (tmp) {
 		printf("Data in node after push front: %s\n", (char *)tmp->data);
@@ -270,7 +264,7 @@ void bonus() {
 
 	color = BLUE;
 	printf("%s\n\n", color);
-	ft_list_remove_if(&head, "3", &ft_strcmp, &free_fct);
+	ft_list_remove_if(&head, "1", &ft_strcmp, &free_fct);
 	ft_list_remove_if(NULL, NULL, NULL, NULL);
 	front = head;
 	while (front) {
@@ -280,8 +274,11 @@ void bonus() {
 	while (head) {
 		t_list *tmp = head;
 		head = head->next;
-		if (head) {
-			free(tmp->data);
+		if (tmp) {
+			printf("dans le free : %s\n", (char *)tmp->data);
+			if (tmp->data) {
+				free(tmp->data);
+			}
 			free(tmp);
 		}
 	}
@@ -290,7 +287,7 @@ void bonus() {
 int main(int argc, char **argv) {
 	(void)argv;
 	if (argc == 1)
-		bonus();
+		marche();
 	else if (!strcmp(argv[1], "crash"))
 		crash();
 	else {

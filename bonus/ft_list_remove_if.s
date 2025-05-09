@@ -57,9 +57,9 @@ ft_list_remove_if:
 	jmp .loop
 
 .head:
-	mov rdi, [r11]
 	mov r10, [r11 + 8]
 	mov [r12], r10
+	mov rdi, [r11]
 	push r11
 	call r13
 	pop r11
