@@ -169,8 +169,8 @@ void free_fct(void *data) {
 int ft_atoi_base(char *src, char *base);
 t_list *ft_list_push_front(t_list **head, void *data);
 int ft_list_size(t_list *head);
-t_list *ft_list_sort(t_list **head, int (*ft_strcmp)());
-t_list *ft_list_remove_if(t_list **head, void *to_comp, int (*ft_strcmp)(), void (free_fct)(void *));
+void ft_list_sort(t_list **head, int (*ft_strcmp)());
+char *ft_list_remove_if(t_list **head, void *to_comp, int (*ft_strcmp)(), void (free_fct)(void *));
 
 
 
@@ -268,7 +268,10 @@ void bonus() {
 		front = front->next;
 	}
 
-	ft_list_remove_if(&head, "1", &ft_strcmp, &free_fct);
+	color = BLUE;
+	printf("%s\n\n", color);
+	ft_list_remove_if(&head, "3", &ft_strcmp, &free_fct);
+	ft_list_remove_if(NULL, NULL, NULL, NULL);
 	front = head;
 	while (front) {
 		printf("apres lst remove if: %s\n", (char *)front->data);

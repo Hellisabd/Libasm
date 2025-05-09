@@ -4,6 +4,14 @@ section .text
 	
 
 ft_list_remove_if:
+	cmp rsi, 0
+	je .error
+	cmp rdi, 0
+	je .error
+	cmp rdx, 0
+	je .error
+	cmp rcx, 0
+	je .error
 	mov r12, rdi
 	mov r15, rsi
 	mov r11, [r12]
@@ -26,31 +34,43 @@ ft_list_remove_if:
 .equal:
 	cmp r11, [r12]
 	je .head
+	mov r9, [r12]
 	jmp .search_prev
 
 .search_prev:
-	mov r9, [r12]
 	cmp [r9 + 8], r11
 	je .no_head
 	mov r9, [r9 + 8]
+	jmp .search_prev
 
 .no_head:
+	mov rdi, [r11 + 8]
+	mov [r9 + 8], rdi
 	mov r9, [r11 + 8]
 	mov rdi, [r11]
+	push r11
 	call r13
+	pop r11
 	mov rdi, r11
 	call free
-	mov r11, r9
+	mov r11, [r12]
 	jmp .loop
 
 .head:
 	mov rdi, [r11]
 	mov r10, [r11 + 8]
-	mov [r12], rdx
+	mov [r12], r10
+	push r11
 	call r13
-	mov r11, r10
+	pop r11
+	mov rdi, r11
+	call free
+	mov r11, [r12]
 	jmp .loop
 
 .done:
 	mov rax, 0
+	ret
+
+.error:
 	ret
